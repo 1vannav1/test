@@ -100,6 +100,7 @@ public class Main {
             addTableRow(table2, new String[]{"I_C2", "50", "f_C2", "290", "2", "-"}, dateFont);
 
             document.add(table2);
+            document.add(getTestTable());
 
             // Добавляем информацию об ошибках
             Paragraph errors = new Paragraph("Зарегистрированные ошибки: нет", dateFont);
@@ -143,6 +144,39 @@ public class Main {
             case Protection3X -> reportForProtection3X();
             case Hand -> reportForHand();
         }
+    }
+
+    // Метод для создания ячейки с индексом
+    private static PdfPCell createIndexedCell(String base, String index) {
+        Chunk baseText = new Chunk(base, FontFactory.getFont(FontFactory.HELVETICA, 12));
+        Chunk subscriptText = new Chunk(index, FontFactory.getFont(FontFactory.HELVETICA, 8));
+        subscriptText.setTextRise(-3); // Смещение вниз для нижнего индекса
+
+        Phrase phrase = new Phrase();
+        phrase.add(baseText);
+        phrase.add(subscriptText);
+
+        PdfPCell cell = new PdfPCell(phrase);
+        cell.setMinimumHeight(25);
+        cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+        cell.setVerticalAlignment(Element.ALIGN_CENTER);
+
+
+        return cell;
+    }
+
+    private static PdfPTable getTestTable() {
+        PdfPTable table = new PdfPTable(2);
+        table.setWidthPercentage(50); // Ширина 50% страницы
+        table.setSpacingBefore(10); // Отступ перед таблицей
+
+        // Добавляем ячейки с индексами
+        table.addCell(createIndexedCell("F", "A1"));
+        table.addCell(createIndexedCell("1", "")); // Вторая колонка первой строки
+
+        table.addCell(createIndexedCell("F", "A2"));
+        table.addCell(createIndexedCell("0", "")); // Вторая колонка второй строки
+        return table;
     }
 
 
