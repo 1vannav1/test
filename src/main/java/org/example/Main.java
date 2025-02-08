@@ -3,135 +3,131 @@ package org.example;
 //import com.aspose.pdf.Document;
 import com.lowagie.text.*;
 import com.lowagie.text.Font;
-import com.lowagie.text.pdf.BaseFont;
-import com.lowagie.text.pdf.PdfContentByte;
-import com.lowagie.text.pdf.PdfWriter;
+import com.lowagie.text.pdf.*;
 import com.lowagie.text.pdf.TextField;
 
 import java.awt.*;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class Main {
 
-    public static void main(String[] args) throws DocumentException, IOException {
-        //Пробный перменные для вывода данных
-        String time = "50";
-        String FIO = "Иван Иванович Иванов";
-        //Пробный перменные для вывода данных
-        String fontPath = "C:\\Users\\ing8\\IdeaProjects\\test\\target\\ofont.ru_Myriad Pro.ttf"; // Укажите правильный путь к TTF файлу
-        String outputPath = "output.pdf";
+    private static Font actualFont;
 
+
+
+//    private static void setFont() throws DocumentException, IOException {
+//        BaseFont baseFont = BaseFont.createFont("ofont.ru_Myriad Pro.ttf", BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
+//        actualFont = new Font(baseFont, 12, Font.NORMAL);
+//    }
+
+
+    public static void main(String[] args) {
         Document document = new Document();
-        PdfWriter writer = null;
-
         try {
-            //создание файла
-            writer = PdfWriter.getInstance(document, new FileOutputStream(outputPath));
+            PdfWriter.getInstance(document, new FileOutputStream("protocol_difzashchita.pdf"));
             document.open();
 
-            //Запись начального текста
-            writeInitialText(writer, fontPath);
-            //tableParametersOne();
-            //закрываем файл, пишем об удачном создании
-        }
-        catch (DocumentException | IOException e) {
-                e.printStackTrace();
-        }
+            //добавляем русский шрифт
+            BaseFont baseFont = BaseFont.createFont("ofont.ru_Myriad Pro.ttf", BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
+            Font titleFont = new Font(baseFont,  18, Font.NORMAL);
 
-        finally {
+            // Добавляем заголовок
+            Paragraph title = new Paragraph("Протокол проверки дифференциальной защиты", titleFont);
+            title.setAlignment(Element.ALIGN_CENTER);
+            document.add(title);
+
+            // Добавляем дату и время
+            Font dateFont = new Font(baseFont, 12, Font.NORMAL);
+            Paragraph date = new Paragraph("Дата:" + LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd.MM.yyyy")) +
+                    "       Время:" + LocalDateTime.now().format(DateTimeFormatter.ofPattern("HH:mm")),
+                    dateFont);
+            document.add(date);
+
+            // Добавляем ФИО работника
+            Paragraph worker = new Paragraph("ФИО работника: Иванов Иван Иванович", dateFont);
+            document.add(worker);
+
+            // Добавляем название оборудования
+            Paragraph equipment = new Paragraph("Название оборудования: Т-16-У3", dateFont);
+            document.add(equipment);
+
+            // Добавляем форму проверки
+            Paragraph checkForm = new Paragraph("Форма проверки: проверка дифференциальной защиты.", dateFont);
+            document.add(checkForm);
+
+            // Добавляем вид повреждения
+            Paragraph damageType = new Paragraph("Вид повреждения: внешнее двухфазное КЗ на землю.", dateFont);
+            document.add(damageType);
+
+            // Добавляем таблицу 1
+            PdfPTable table1 = new PdfPTable(2);
+            table1.setWidthPercentage(100);
+            table1.setSpacingBefore(10f);
+            table1.setSpacingAfter(10f);
+
+            addTableHeader(table1, new String[]{"Альфа", "1"}, dateFont);
+            addTableRow(table1, new String[]{"Бета", "2"}, dateFont);
+            addTableRow(table1, new String[]{"Гамма", "3"}, dateFont);
+            addTableRow(table1, new String[]{"Штрих", "4"}, dateFont);
+
+            document.add(table1);
+
+            // Добавляем таблицу 2
+            PdfPTable table2 = new PdfPTable(6);
+            table2.setWidthPercentage(100);
+            table2.setSpacingBefore(10f);
+            table2.setSpacingAfter(10f);
+
+
+
+//            addTableHeader(table2, new String[]{"I_A1", "100", "f_A1", "10", "Сработавшие контакты"}, dateFont);
+//            addTableRow(table2, new String[]{"I_B1", "100", "f_B1", "130", "1, 2"}, dateFont);
+//            addTableRow(table2, new String[]{"I_C1", "100", "f_C1", "280", "сработал, нет"}, dateFont);
+//            addTableRow(table2, new String[]{"I_A2", "50", "f_A2", "20", "Время срабатывания контакта"}, dateFont);
+//            addTableRow(table2, new String[]{"I_B2", "50", "f_B2", "140", "1, 0.5 секунд"}, dateFont);
+//            addTableRow(table2, new String[]{"I_C2", "50", "f_C2", "290", "2, -"}, dateFont);
+//
+//            document.add(table2);
+
+            addTableHeader(table2, new String[]{"I_A1", "100", "f_A1", "10", "Сработавшие контакты",""}, dateFont);
+            addTableRow(table2, new String[]{"I_B1", "100", "f_B1", "130", "1", "2"}, dateFont);
+            addTableRow(table2, new String[]{"I_C1", "100", "f_C1", "280", "сработал", "нет"}, dateFont);
+            addTableRow(table2, new String[]{"I_A2", "50", "f_A2", "20", "Время срабатывания контакта, c",""}, dateFont);
+            addTableRow(table2, new String[]{"I_B2", "50", "f_B2", "140", "1", "0.5"}, dateFont);
+            addTableRow(table2, new String[]{"I_C2", "50", "f_C2", "290", "2", "-"}, dateFont);
+
+            document.add(table2);
+
+            // Добавляем информацию об ошибках
+            Paragraph errors = new Paragraph("Зарегистрированные ошибки: нет", dateFont);
+            document.add(errors);
+
+        } catch (DocumentException | IOException e) {
+            e.printStackTrace();
+        } finally {
             document.close();
             System.out.println("Файл создан!");
         }
     }
 
-
-    private static void writeInitialText(PdfWriter writer, String fontPath) throws IOException  {
-        try {
-            // Задаем шрифт, который поддерживает кириллицу
-            BaseFont bf = BaseFont.createFont(fontPath,
-                    BaseFont.IDENTITY_H,
-                    BaseFont.EMBEDDED
-            );
-
-            // Создаем PdfContentByte для рисования на документе
-            PdfContentByte cb = writer.getDirectContent();
-            cb.beginText();
-            cb.setFontAndSize(bf, 12);
-
-            // Начальные координаты для текста
-            float x = 100;
-            float y = 800; // Начальная позиция по оси Y
-
-            // Печатаем несколько строк текста
-            String[] lines = {
-                    "Дата:          Время:" ,
-                    "ФИО исполнителя:" ,
-                    "Название объекта: Т-16-132632лрилытлтва",
-            };
-
-            for (String line : lines) {
-                cb.setTextMatrix(x, y);
-                cb.showText(line);
-                y -= 15; // Уменьшаем y, чтобы перейти к следующей строке (15 - высота строки)
-            }
-
-            cb.endText();
-
-        } catch (DocumentException e) {
-            e.printStackTrace();
+    private static void addTableHeader(PdfPTable table, String[] headers, Font font) {
+        for (String header : headers) {
+            PdfPCell cell = new PdfPCell(new Phrase(header, font));
+            table.addCell(cell);
         }
     }
-//ИЗМЕНИТЬ метод для создания таблицы
-//    private static void tableParametersOne() throws DocumentException, IOException {
-//        //создание таблицы 1, параметров системы.
-//        tableParametersOne = new Table(2, 4);
-//        tableParametersOne.setPadding(2);
-//        tableParametersOne.setWidth(100);
-//
-//        Cell[] cellsArray = new Cell[8];
-//
-//        String textAlfa = "Альфа";
-//
-//        cellsArray[0] = new Cell(new Phrase(textAlfa, actualFont));
-//        cellsArray[0].setHorizontalAlignment(Element.ALIGN_LEFT);
-//        tableParametersOne.addCell(cellsArray[0]);
-//
-//
-//        cellsArray[1] = new Cell(new Phrase("1", actualFont));
-//        cellsArray[1].setHorizontalAlignment(Element.ALIGN_LEFT);
-//        tableParametersOne.addCell(cellsArray[1]);
-//
-//        String textBeta = "Бета" ;
-//
-//        cellsArray[2] = new Cell(new Phrase(textBeta, actualFont));
-//        cellsArray[2].setHorizontalAlignment(Element.ALIGN_LEFT);
-//        tableParametersOne.addCell(cellsArray[2]);
-//
-//        cellsArray[3] = new Cell(new Phrase("2", actualFont));
-//        cellsArray[3].setHorizontalAlignment(Element.ALIGN_LEFT);
-//        tableParametersOne.addCell(cellsArray[3]);
-//
-//        String textGamma = "Gamma" ;
-//
-//        cellsArray[4] = new Cell(new Phrase(textGamma, actualFont));
-//        cellsArray[4].setHorizontalAlignment(Element.ALIGN_LEFT);
-//        tableParametersOne.addCell(cellsArray[4]);
-//
-//        cellsArray[5] = new Cell(new Phrase("3", actualFont));
-//        cellsArray[5].setHorizontalAlignment(Element.ALIGN_LEFT);
-//        tableParametersOne.addCell(cellsArray[5]);
-//
-//        String textShtrih = "Штрих" ;
-//
-//        cellsArray[6] = new Cell(new Phrase(textShtrih, actualFont));
-//        cellsArray[6].setHorizontalAlignment(Element.ALIGN_LEFT);
-//        tableParametersOne.addCell(cellsArray[6]);
-//
-//        cellsArray[7] = new Cell(new Phrase("4", actualFont));
-//        cellsArray[7].setHorizontalAlignment(Element.ALIGN_LEFT);
-//        tableParametersOne.addCell(cellsArray[7]);
-//        }
+
+    private static void addTableRow(PdfPTable table, String[] rowData, Font font) {
+        for (String data : rowData) {
+            PdfPCell cell = new PdfPCell(new Phrase(data, font));
+            table.addCell(cell);
+        }
+    }
+
+
 
 
     enum Scenarios {
