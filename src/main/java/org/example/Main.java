@@ -64,7 +64,7 @@ public class Main {
 
             // Добавляем таблицу 1
             PdfPTable table1 = new PdfPTable(2);
-            table1.setWidthPercentage(100);
+            table1.setWidthPercentage(50);
             table1.setSpacingBefore(10f);
             table1.setSpacingAfter(10f);
 
@@ -81,21 +81,45 @@ public class Main {
             table2.setSpacingBefore(10f);
             table2.setSpacingAfter(10f);
 
+            //addTableHeader(table2, new String[]{"I_A1", "100", "f_A1", "10", "Сработавшие контакты",""}, dateFont);
+            //Создаю ячейки поочереди, так как только так их можно объединить
+            PdfPCell cell00 = new PdfPCell(new Phrase("I_A1", dateFont));
+            table2.addCell(cell00);
 
+            PdfPCell cell01 = new PdfPCell(new Phrase("100", dateFont));
+            table2.addCell(cell01);
 
-//            addTableHeader(table2, new String[]{"I_A1", "100", "f_A1", "10", "Сработавшие контакты"}, dateFont);
-//            addTableRow(table2, new String[]{"I_B1", "100", "f_B1", "130", "1, 2"}, dateFont);
-//            addTableRow(table2, new String[]{"I_C1", "100", "f_C1", "280", "сработал, нет"}, dateFont);
-//            addTableRow(table2, new String[]{"I_A2", "50", "f_A2", "20", "Время срабатывания контакта"}, dateFont);
-//            addTableRow(table2, new String[]{"I_B2", "50", "f_B2", "140", "1, 0.5 секунд"}, dateFont);
-//            addTableRow(table2, new String[]{"I_C2", "50", "f_C2", "290", "2, -"}, dateFont);
-//
-//            document.add(table2);
+            PdfPCell cell02 = new PdfPCell(new Phrase("f_A1", dateFont));
+            table2.addCell(cell02);
 
-            addTableHeader(table2, new String[]{"I_A1", "100", "f_A1", "10", "Сработавшие контакты",""}, dateFont);
+            PdfPCell cell03 = new PdfPCell(new Phrase("10", dateFont));
+            table2.addCell(cell03);
+
+            PdfPCell mergedCell04 = new PdfPCell(new Phrase("Сработавшие контакты", dateFont));
+            mergedCell04.setColspan(2);
+            table2.addCell(mergedCell04);
+
             addTableRow(table2, new String[]{"I_B1", "100", "f_B1", "130", "1", "2"}, dateFont);
             addTableRow(table2, new String[]{"I_C1", "100", "f_C1", "280", "сработал", "нет"}, dateFont);
-            addTableRow(table2, new String[]{"I_A2", "50", "f_A2", "20", "Время срабатывания контакта, c",""}, dateFont);
+
+            //addTableRow(table2, new String[]{"I_A2", "50", "f_A2", "20", "Время срабатывания контакта, c",""}, dateFont);
+            //Создаю ячейки поочереди, так как только так их можно объединить
+            PdfPCell cell40 = new PdfPCell(new Phrase("I_A2", dateFont));
+            table2.addCell(cell40);
+
+            PdfPCell cell41 = new PdfPCell(new Phrase("50", dateFont));
+            table2.addCell(cell41);
+
+            PdfPCell cell42 = new PdfPCell(new Phrase("f_A2", dateFont));
+            table2.addCell(cell42);
+
+            PdfPCell cell43 = new PdfPCell(new Phrase("20", dateFont));
+            table2.addCell(cell43);
+
+            PdfPCell mergedCell44 = new PdfPCell(new Phrase("Время срабатывания контакта, c", dateFont));
+            mergedCell44.setColspan(2);
+            table2.addCell(mergedCell44);
+
             addTableRow(table2, new String[]{"I_B2", "50", "f_B2", "140", "1", "0.5"}, dateFont);
             addTableRow(table2, new String[]{"I_C2", "50", "f_C2", "290", "2", "-"}, dateFont);
 
@@ -127,6 +151,13 @@ public class Main {
             table.addCell(cell);
         }
     }
+
+
+
+
+
+
+
 
 
 
