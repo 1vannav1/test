@@ -16,11 +16,6 @@ import java.util.ArrayList;
 
 public class Main {
 
-//    private static void setFont() throws DocumentException, IOException {
-//        BaseFont baseFont = BaseFont.createFont("ofont.ru_Myriad Pro.ttf", BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
-//        actualFont = new Font(baseFont, 12, Font.NORMAL);
-//    }
-
 
     public static void main(String[] args) {
         Document document = new Document();
@@ -127,6 +122,8 @@ public class Main {
         }
     }
 
+    //пока не измененный метод добавления заголовков таблицы под индексацию
+    //addTableHeader(table2, new String[]{"I_A1", "100", "f_A1", "10", "Сработавшие контакты"}, dateFont);
     private static void addTableHeader(PdfPTable table, String[] headers, Font font) {
         for (String header : headers) {
             PdfPCell cell = new PdfPCell(new Phrase(header, font));
@@ -296,7 +293,56 @@ public class Main {
 //        }
 //
 //        return table;
-    }
+
+        enum Scenarios {
+            Switcher, COMETRADE, DifferentialProtection, Protection1X, Protection3X, Hand
+        }
+
+        public void printProperReport(Scenarios scenario) {
+            switch (scenario) {
+                case Switcher -> reportForSwitcher();
+                case COMETRADE -> reportForCOMETRADE();
+                case DifferentialProtection -> reportForDifProtection();
+                case Protection1X -> reportForProtection1X();
+                case Protection3X -> reportForProtection3X();
+                case Hand -> reportForHand();
+            }
+        }
+
+
+
+
+        private void reportForDifProtection() {
+
+
+        }
+
+
+        private void reportForSwitcher() {
+
+        }
+
+
+        private void reportForCOMETRADE() {
+
+        }
+
+
+        private void reportForProtection1X() {
+
+        }
+
+
+        private void reportForProtection3X() {
+
+        }
+
+
+        private void reportForHand() {
+
+        }
+
+}
 
 
 
@@ -310,50 +356,4 @@ public class Main {
 
 
 
-//    enum Scenarios {
-//        Switcher, COMETRADE, DifferentialProtection, Protection1X, Protection3X, Hand
-//    }
-//
-//    public void printProperReport(Scenarios scenario) {
-//        switch (scenario) {
-//            case Switcher -> reportForSwitcher();
-//            case COMETRADE -> reportForCOMETRADE();
-//            case DifferentialProtection -> reportForDifProtection();
-//            case Protection1X -> reportForProtection1X();
-//            case Protection3X -> reportForProtection3X();
-//            case Hand -> reportForHand();
-//        }
-//    }
-//
-//
-//
-//
-//    private void reportForDifProtection() {
-//
-//
-//    }
-//
-//
-//    private void reportForSwitcher() {
-//
-//    }
-//
-//
-//    private void reportForCOMETRADE() {
-//
-//    }
-//
-//
-//    private void reportForProtection1X() {
-//
-//    }
-//
-//
-//    private void reportForProtection3X() {
-//
-//    }
-//
-//
-//    private void reportForHand() {
-//
-//    }
+
