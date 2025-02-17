@@ -17,7 +17,9 @@ import java.util.List;
 import static org.example.settings.createFont;
 
 public class ContentCreator {
-
+    /**
+     * Класс содержащий в себе другие подклассы для создания таблиц, текстовых полей и прочее.
+     */
     public static class TableCreator {
 
         private PdfPTable table;
@@ -107,6 +109,7 @@ public class ContentCreator {
             table.getRow(startRow).getCells()[column] = mergedCell;
         }
     }
+    //public static cass
 }
 
 
