@@ -20,8 +20,6 @@ public class ContentCreator {
 
     public static class TableCreator {
 
-       // Font font = new settings(createFont());
-
         private PdfPTable table;
         private List<List<PdfPCell>> cellGrid; // Сетка ячеек для доступа по индексам
 
@@ -81,16 +79,13 @@ public class ContentCreator {
             if (startColumn >= endColumn || endColumn >= table.getNumberOfColumns()) {
                 throw new IllegalArgumentException("Недопустимые индексы столбцов");
             }
-
             // Удаляем ячейки, которые будут объединены
             for (int i = startColumn; i <= endColumn; i++) {
                 table.getRow(row).getCells()[i] = null;
             }
-
             // Создаем новую ячейку с объединением
             PdfPCell mergedCell = createCell(content, font);
-            mergedCell.setColspan(endColumn - startColumn + 1); // Указываем количество объединяемых столбцов
-
+            mergedCell.setColspan(endColumn - startColumn + 1);
             // Добавляем объединенную ячейку в таблицу
             table.getRow(row).getCells()[startColumn] = mergedCell;
         }
@@ -101,16 +96,13 @@ public class ContentCreator {
             if (startRow >= endRow || endRow >= table.getRows().size()) {
                 throw new IllegalArgumentException("Недопустимые индексы строк");
             }
-
             // Удаляем ячейки, которые будут объединены
             for (int i = startRow; i <= endRow; i++) {
                 table.getRow(i).getCells()[column] = null;
             }
-
             // Создаем новую ячейку с объединением
             PdfPCell mergedCell = createCell(content, font);
             mergedCell.setRowspan(endRow - startRow + 1);
-
             // Добавляем объединенную ячейку в таблицу
             table.getRow(startRow).getCells()[column] = mergedCell;
         }
