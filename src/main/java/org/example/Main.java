@@ -25,26 +25,39 @@ public class Main {
             document.open();
 
         int rows = 3;
-        int columns = 3;
+        int columns = 6;
 
         BaseFont baseFont = BaseFont.createFont("C:\\Users\\ing8\\IdeaProjects\\test\\ofont.ru_Myriad Pro.ttf", BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
         Font font = new Font(baseFont, 12, Font.NORMAL);
 
-        ContentCreator.TableCreator tableCreator = new ContentCreator.TableCreator();
-        PdfPTable table = tableCreator.createTable(rows, columns, font);
+        //создали таблицу нужного нам размера
+        ContentCreator.TableCreator testTable = new ContentCreator.TableCreator();
+        PdfPTable table = testTable.createTable(rows, columns, font);
 
-            // Заполняем ячейки данными
-        tableCreator.addElement(0, 0, "1", font);
-        tableCreator.addElement(0, 1, "2", font);
-        tableCreator.addElement(0, 2, "3", font);
+        //объединяем необходимые нам ячейки в строке.
+        testTable.mergeCellsInOneRow(0, 4,5,"объединил ячейки в строке(04-05)", font);
 
-        tableCreator.addElement(1, 0, "1", font);
-        tableCreator.addElement(1, 1, "2", font);
-        tableCreator.addElement(1, 2, "3", font);
+        //объединяем необходимые нам ячейки в строке.
+        testTable.mergeCellsInOneColumn(0, 1,2,"объединил ячейки в столбце(10-20)", font);
 
-        tableCreator.addElement(2, 0, "1", font);
-        tableCreator.addElement(2, 1, "2", font);
-        tableCreator.addElement(2, 2, "3", font);
+        // Заполняем ячейки данными
+            //первая строчка
+        testTable.setCellContent(0,0,"00", font);
+        testTable.setCellContent(0,1,"01", font);
+        testTable.setCellContent(0,2,"02", font);
+        testTable.setCellContent(0,3,"03", font);
+            //вторая строчка
+        testTable.setCellContent(1,1,"11", font);
+        testTable.setCellContent(1,2,"12", font);
+        testTable.setCellContent(1,3,"13", font);
+        testTable.setCellContent(1,4,"14", font);
+        testTable.setCellContent(1,5,"15", font);
+            //третья строчка
+        testTable.setCellContent(2,1,"21", font);
+        testTable.setCellContent(2,2,"22", font);
+        testTable.setCellContent(2,3,"23", font);
+        testTable.setCellContent(2,4,"24", font);
+        testTable.setCellContent(2,5,"25", font);
 
         document.add(table);
 

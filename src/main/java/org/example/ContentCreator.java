@@ -37,24 +37,15 @@ public class ContentCreator {
 
             // Создание строк и ячеек
             for (int i = 0; i < rows; i++) {
-                List<PdfPCell> rowCells = createRow(columns, font);
-                cellGrid.add(rowCells);
-                for (PdfPCell cell : rowCells) {
+                List<PdfPCell> rowCells = new ArrayList<>();
+                for (int j = 0; j < columns; j++) {
+                    PdfPCell cell = createCell("", font);
+                    rowCells.add(cell);
                     table.addCell(cell);
                 }
+                cellGrid.add(rowCells);
             }
-
             return table;
-        }
-
-        // Метод для создания строки
-        private List<PdfPCell> createRow(int columns, Font font) {
-            List<PdfPCell> rowCells = new ArrayList<>();
-            for (int j = 0; j < columns; j++) {
-                PdfPCell cell = createCell("", font);
-                rowCells.add(cell);
-            }
-            return rowCells;
         }
 
         // Метод для создания ячейки
@@ -66,28 +57,66 @@ public class ContentCreator {
             return cell;
         }
 
-        //метод для перехода в нужную нам ячейку
-        private PdfPCell getCell(int row, int column) {
+        // Метод для установки текста в ячейку
+        public void setCellContent(int row, int column, String content, Font font) {
             if (row >= 0 && row < cellGrid.size() && column >= 0 && column < cellGrid.get(row).size()) {
-                return cellGrid.get(row).get(column);
+                // Получаем ячейку из сетки
+                PdfPCell cell = cellGrid.get(row).get(column);
+                // Удаляем старую ячейку из таблицы
+                table.getRow(row).getCells()[column] = null;
+                // Создаем новую ячейку с обновленным содержимым
+                PdfPCell newCell = createCell(content, font);
+                // Заменяем ячейку в сетке
+                cellGrid.get(row).set(column, newCell);
+                // Добавляем новую ячейку в таблицу
+                table.getRow(row).getCells()[column] = newCell;
+            } else {
+                throw new IllegalArgumentException("Недопустимые индексы строки или столбца");
             }
-            throw new IllegalArgumentException("Недопустимые индексы строки или столбца");
-        }
-
-        public void addElement(int row, int column, String content, Font font){
-            PdfPCell cell = getCell(row, column);
-            cell.setPhrase(new Phrase(content, font));
         }
 
         //метод для объединения двух ячеек в одной строке
-        private static void mergeCellsInOneRow(int row, int column1, int column2) {
+        public void mergeCellsInOneRow(int row, int startColumn, int endColumn, String content, Font font) {
+            // Проверяем, что startColumn и endColumn находятся в пределах таблицы
+            if (startColumn >= endColumn || endColumn >= table.getNumberOfColumns()) {
+                throw new IllegalArgumentException("Недопустимые индексы столбцов");
+            }
+
+            // Удаляем ячейки, которые будут объединены
+            for (int i = startColumn; i <= endColumn; i++) {
+                table.getRow(row).getCells()[i] = null;
+            }
+
+            // Создаем новую ячейку с объединением
+            PdfPCell mergedCell = createCell(content, font);
+            mergedCell.setColspan(endColumn - startColumn + 1); // Указываем количество объединяемых столбцов
+
+            // Добавляем объединенную ячейку в таблицу
+            table.getRow(row).getCells()[startColumn] = mergedCell;
         }
 
         //метод для объединения двух ячеек в одном стобце
-        private static void mergeCellsInOneColumn(int row1, int row2, int column) {
+        public void mergeCellsInOneColumn(int column, int startRow, int endRow, String content, Font font) {
+            // Проверяем, что startRow и endRow находятся в пределах таблицы
+            if (startRow >= endRow || endRow >= table.getRows().size()) {
+                throw new IllegalArgumentException("Недопустимые индексы строк");
+            }
+
+            // Удаляем ячейки, которые будут объединены
+            for (int i = startRow; i <= endRow; i++) {
+                table.getRow(i).getCells()[column] = null;
+            }
+
+            // Создаем новую ячейку с объединением
+            PdfPCell mergedCell = createCell(content, font);
+            mergedCell.setRowspan(endRow - startRow + 1);
+
+            // Добавляем объединенную ячейку в таблицу
+            table.getRow(startRow).getCells()[column] = mergedCell;
         }
     }
 }
+
 
 
 
