@@ -28,37 +28,34 @@ public class reportForDifProtection {
             PdfWriter.getInstance(document, new FileOutputStream(properName));
             document.open();
 
-            BaseFont baseFont = BaseFont.createFont("C:\\Users\\ing8\\IdeaProjects\\test\\ofont.ru_Myriad Pro.ttf", BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
-            Font font = new Font(baseFont, 12, Font.NORMAL);
-
             //создали таблицу нужного нам размера
-            ContentCreator.TableCreator testTable = new ContentCreator.TableCreator();
-            PdfPTable table = testTable.createTable(rows, columns, font);
+            TableCreator testTable = new TableCreator();
+            PdfPTable table = testTable.createTable(rows, columns);
 
             //объединяем необходимые нам ячейки в строке.
-            testTable.mergeCellsInOneRow(0, 4, 5, "объединил ячейки в строке(04-05)", font);
+            testTable.mergeCellsInOneRow(0, 4, 5, "объединил ячейки в строке(04-05)", "0");
 
             //объединяем необходимые нам ячейки в строке.
-            testTable.mergeCellsInOneColumn(0, 1, 2, "объединил ячейки в столбце(10-20)", font);
+            testTable.mergeCellsInOneColumn(0, 1, 2, "объединил ячейки в столбце(10-20)", "0");
 
             // Заполняем ячейки данными
             //первая строчка
-            testTable.setCellContent(0, 0, "00", font);
-            testTable.setCellContent(0, 1, "01", font);
-            testTable.setCellContent(0, 2, "02", font);
-            testTable.setCellContent(0, 3, "03", font);
+            testTable.setCellContent(0, 0, "0", "0");
+            testTable.setCellContent(0, 1, "0", "1");
+            testTable.setCellContent(0, 2, "0", "2");
+            testTable.setCellContent(0, 3, "0", "3");
             //вторая строчка
-            testTable.setCellContent(1, 1, "11", font);
-            testTable.setCellContent(1, 2, "12", font);
-            testTable.setCellContent(1, 3, "13", font);
-            testTable.setCellContent(1, 4, "14", font);
-            testTable.setCellContent(1, 5, "15", font);
+            testTable.setCellContent(1, 1, "1", "1");
+            testTable.setCellContent(1, 2, "1", "2");
+            testTable.setCellContent(1, 3, "1", "3");
+            testTable.setCellContent(1, 4, "1", "4");
+            testTable.setCellContent(1, 5, "1", "5");
             //третья строчка
-            testTable.setCellContent(2, 1, "21", font);
-            testTable.setCellContent(2, 2, "22", font);
-            testTable.setCellContent(2, 3, "23", font);
-            testTable.setCellContent(2, 4, "24", font);
-            testTable.setCellContent(2, 5, "25", font);
+            testTable.setCellContent(2, 1, "2", "1");
+            testTable.setCellContent(2, 2, "2", "2");
+            testTable.setCellContent(2, 3, "2", "3");
+            testTable.setCellContent(2, 4, "2", "4");
+            testTable.setCellContent(2, 5, "2", "5");
 
             document.add(table);
 
@@ -66,7 +63,7 @@ public class reportForDifProtection {
             e.printStackTrace();
         } finally {
             document.close();
-            System.out.println("Файл создан");
+            System.out.println("Файл создан. Файл называется - " + properName);
         }
     }
 }

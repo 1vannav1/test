@@ -1,6 +1,7 @@
 package org.example;
 
 //import com.aspose.pdf.Document;
+
 import com.lowagie.text.*;
 import com.lowagie.text.Font;
 import com.lowagie.text.List;
@@ -28,13 +29,13 @@ public class Main {
         int rows = 3;
         int columns = 6;
         //2.getProperName
-        String properName = "testTable";
+        String properName = "testTable.pdf";
         //3.Отправка массива данных от сценария из буфера для создания 5 элементов:
         //
 
 
         //создаем отчет
-        createReportForDifProtection(rows,columns,properName);
+        createReportForDifProtection(rows, columns, properName);
     }
 }
 //    public static void printProperReport (Scenarios scenario){
