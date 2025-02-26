@@ -31,7 +31,6 @@ public class Main {
         //2.getProperName
         String properName = "testTable.pdf";
         //3.Отправка массива данных от сценария из буфера для создания 5 элементов:
-        //
 
 
 

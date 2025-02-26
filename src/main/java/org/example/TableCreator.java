@@ -25,6 +25,8 @@ public class TableCreator {
     private List<List<PdfPCell>> cellGrid;
     private int columns;
     private int rows;
+    private PdfPTable table1;
+
     private BaseFont baseFont = BaseFont.createFont("C:\\Users\\ing8\\IdeaProjects\\test\\ofont.ru_Myriad Pro.ttf", BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
     private Font font = new Font(baseFont, 12, Font.NORMAL);
 
@@ -32,12 +34,15 @@ public class TableCreator {
     public TableCreator(int rows, int columns) throws DocumentException, IOException {
     this.columns = columns;
     this.rows = rows;
+    table1 = createTable(rows, columns);
+    }
 
-    PdfPTable table1 = createTable(rows, columns);
+    public PdfPTable getTable(){
+        return table1;
     }
 
     // Основной метод для создания таблицы
-    public PdfPTable createTable(int rows, int columns)throws DocumentException, IOException {
+    private PdfPTable createTable(int rows, int columns){
         table = new PdfPTable(columns);
         table.setWidthPercentage(100);
         table.setSpacingBefore(10f);

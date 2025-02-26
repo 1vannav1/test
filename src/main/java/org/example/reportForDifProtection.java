@@ -29,8 +29,8 @@ public class reportForDifProtection {
             document.open();
 
             //создали таблицу нужного нам размера
-            TableCreator testTable = new TableCreator();
-            PdfPTable table = testTable.createTable(rows, columns);
+            TableCreator testTable = new TableCreator(rows, columns);
+            PdfPTable table = testTable.getTable();
 
             //объединяем необходимые нам ячейки в строке.
             testTable.mergeCellsInOneRow(0, 4, 5, "объединил ячейки в строке(04-05)", "0");
