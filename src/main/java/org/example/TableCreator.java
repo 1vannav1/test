@@ -51,6 +51,7 @@ public class TableCreator {
         // Инициализация сетки ячеек
         cellGrid = new ArrayList<>();
 
+
         // Создание строк и ячеек
         for (int i = 0; i < rows; i++) {
             List<PdfPCell> rowCells = new ArrayList<>();
