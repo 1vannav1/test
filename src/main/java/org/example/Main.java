@@ -33,7 +33,6 @@ public class Main {
         //3.Отправка массива данных от сценария из буфера для создания 5 элементов:
 
 
-
         //создаем отчет
         createReportForDifProtection(rows, columns, properName);
     }
