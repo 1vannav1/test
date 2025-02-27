@@ -9,7 +9,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-
 public class TableCreator {
 
     /**
@@ -51,7 +50,6 @@ public class TableCreator {
         // Инициализация сетки ячеек
         cellGrid = new ArrayList<>();
 
-
         // Создание строк и ячеек
         for (int i = 0; i < rows; i++) {
             List<PdfPCell> rowCells = new ArrayList<>();
@@ -77,7 +75,7 @@ public class TableCreator {
         phrase.add(subscriptText);
         PdfPCell cell = new PdfPCell(phrase);
 
-        cell.setMinimumHeight(25);
+        cell.setMinimumHeight(35);
         cell.setHorizontalAlignment(Element.ALIGN_CENTER);
         cell.setVerticalAlignment(Element.ALIGN_CENTER);
 
