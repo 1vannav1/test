@@ -1,6 +1,5 @@
 package org.example;
 
-import com.aspose.pdf.Font;
 import com.aspose.pdf.IDocument;
 import com.lowagie.text.*;
 import com.lowagie.text.pdf.PdfPTable;
@@ -25,7 +24,7 @@ public class ReportGenerator {
     // похуй
     static Document document = new Document();
 
-    // Центральный метод, который создает отчет в пдф
+    // Центральный метод, который собирает элементы для отчета в пдф
     public static void generateReport() throws DocumentException, IOException {
 
         Element[] reportElements = new Element[5];  //создание массива элементов для генератора пдф
@@ -60,14 +59,14 @@ public class ReportGenerator {
 
     //Метод для генерации заголовка в начале отчета.
     private static Paragraph getHeader(String[] data){
-        Paragraph header = new Paragraph(data[0] + data[1]);
-        return header;
+
+        Paragraph paragraph = new Paragraph(data[0] + data[1]);
+        return paragraph;
     }
 
     //Метод для генерации заголовка в начале отчета.
     private static Paragraph getScenarioInfo(String[] data){
-        Paragraph scenarioInfo = new Paragraph(data[2] + data[3]);
-        return scenarioInfo;
+        return new Paragraph(data[2] + data[3]);
     }
 
     //Метод для создания таблицы
@@ -103,13 +102,11 @@ public class ReportGenerator {
     }
     //Метод для вывода ошибки
     private static Paragraph getErrors(String[] data){
-        Paragraph errors = new Paragraph("Аварийные сообщения: " + data[4]);
-        return errors;
+        return new Paragraph("Аварийные сообщения: " + data[4]);
     }
 
     //Метод для выведения финальной черты
     private static Paragraph getDivided(){
-        Paragraph Divided = new Paragraph("--------------------------------------------------------------------------------------");
-        return Divided;
+        return new Paragraph("--------------------------------------------------------------------------------------");
     }
 }
