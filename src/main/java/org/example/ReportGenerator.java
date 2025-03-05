@@ -15,11 +15,16 @@ public class ReportGenerator {
      * пдф файла. В дальнейшем этот объект будет использоваться для создания отчета целиком.
      */
 
+
+
+
     //нужное для методов работы
     static String fileName = "fileName.pdf";
     static String[] data = new String[]{"ИМЯ РЕЖИМА","01.01.2025", "12.00.00", "data[3]", "data[4]"};
-    static int rows = 3;
+    static int rows = 7;
     static int columns = 6;
+
+    String[][] getBuferData = new String[][]{{fileName},data,{},{}};
 
     static Font textFont;
     static Settings settings;
@@ -27,9 +32,7 @@ public class ReportGenerator {
     static {
         try {
             settings = new Settings();
-        } catch (DocumentException e) {
-            throw new RuntimeException(e);
-        } catch (IOException e) {
+        } catch (DocumentException | IOException e) {
             throw new RuntimeException(e);
         }
     }
@@ -89,46 +92,79 @@ public class ReportGenerator {
         int v = 14;
         textFont = settings.getFont(v);
 
-        Paragraph paragraph = new Paragraph("Дата: " + data[1] + "  Время: " + data[2], textFont);
+        // формируем строку
+        String strScenario = """
+                Дата: %s Время: %s
+                ФИО работника: 
+                Название объекта: 
+                Схема соединения трансформатора: 
+                Вид повреждения:
+                Таблица 1. Параметры режима  
+                """.formatted(data[1],data[2]);
+
+        Paragraph paragraph = new Paragraph(strScenario, textFont);
         return paragraph;
     }
 
     //Метод для создания таблицы
     private static PdfPTable getScenarioTable(String[] data, int rows, int columns) throws DocumentException, IOException {
+
         TableCreator infoTable = new TableCreator(rows, columns);
         PdfPTable table = infoTable.getTable();
-
-        infoTable.mergeCellsInOneRow(0, 4, 5, "объединил ячейки в строке(04-05)", "0");
-        //объединяем необходимые нам ячейки в строке.
-        infoTable.mergeCellsInOneColumn(0, 1, 2, "объединил ячейки в столбце(10-20)", "0");
-        // Заполняем ячейки данными
+                               //Заполняем ячейки данными
         //первая строчка
-        infoTable.setCellContent(0, 0, data[3], "0");
-        infoTable.setCellContent(0, 1, data[3], "1");
-        infoTable.setCellContent(0, 2, "0", "2");
-        infoTable.setCellContent(0, 3, "0", "3");
+        infoTable.setCellContent(0, 0, "Параметры", "");
+        infoTable.setCellContent(0, 1, "Значения, А", "");
+        infoTable.setCellContent(0, 2, "Параметры", "");
+        infoTable.setCellContent(0, 3, "Значения, град", "");
+        infoTable.mergeCellsInOneRow(0, 4, 5, "Сработавшие контакты", "");
         //вторая строчка
-        infoTable.setCellContent(1, 1, "1", "1");
-        infoTable.setCellContent(1, 2, "1", "2");
-        infoTable.setCellContent(1, 3, "1", "3");
-        infoTable.setCellContent(1, 4, "1", "4");
-        infoTable.setCellContent(1, 5, "1", "5");
+        infoTable.setCellContent(1, 0, "I", "A1");
+        infoTable.setCellContent(1, 1, "101", "");
+        infoTable.setCellContent(1, 2, "\u03C6", "A1");
+        infoTable.setCellContent(1, 3, "10", "");
         //третья строчка
-        infoTable.setCellContent(2, 1, "2", "1");
-        infoTable.setCellContent(2, 2, "2", "2");
-        infoTable.setCellContent(2, 3, "2", "3");
-        infoTable.setCellContent(2, 4, "2", "4");
-        infoTable.setCellContent(2, 5, "2", "5");
+        infoTable.setCellContent(2, 0, "I", "B1");
+        infoTable.setCellContent(2, 1, "102", "");
+        infoTable.setCellContent(2, 2, "\u03C6", "B1");
+        infoTable.setCellContent(2, 3, "130", "");
+        infoTable.mergeCellsInOneColumn(4, 1,3,"1","");
+        infoTable.mergeCellsInOneColumn(5, 1,3,"1","");
+        //четвертая строчка
+        infoTable.setCellContent(3, 0, "I", "c1");
+        infoTable.setCellContent(3, 1, "103", "");
+        infoTable.setCellContent(3, 2, "\u03C6", "С1");
+        infoTable.setCellContent(3, 3, "280", "");
+        //пятая строчка
+        infoTable.setCellContent(4, 0, "I", "A2");
+        infoTable.setCellContent(4, 1, "51", "");
+        infoTable.setCellContent(4, 2, "\u03C6", "A2");
+        infoTable.setCellContent(4, 3, "20", "");
+        //шестая строчка
+        infoTable.setCellContent(5, 0, "I", "B2");
+        infoTable.setCellContent(5, 1, "52", "");
+        infoTable.setCellContent(5, 2, "\u03C6", "B2");
+        infoTable.setCellContent(5, 3, "140", "");
+        infoTable.mergeCellsInOneColumn(4, 4,6,"да","");
+        infoTable.mergeCellsInOneColumn(5, 4,6,"нет","");
+        //седьмая строчка
+        infoTable.setCellContent(6, 0, "I", "С2");
+        infoTable.setCellContent(6, 1, "53", "");
+        infoTable.setCellContent(6, 2, "\u03C6", "С2");
+        infoTable.setCellContent(6, 3, "290", "");
 
         return table;
     }
     //Метод для вывода ошибки
     private static Paragraph getErrors(String[] data){
-        return new Paragraph("Аварийные сообщения: " + data[4]);
+        int v = 14;
+        textFont = settings.getFont(v);
+
+        return new Paragraph("Аварийные сообщения: " + data[4], textFont);
     }
 
     //Метод для выведения финальной черты
     private static Paragraph getDivided(){
-        return new Paragraph("--------------------------------------------------------------------------------------");
+        return new Paragraph("----------------------------------------------------------------------------------------------------------------------------------");
     }
 }

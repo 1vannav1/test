@@ -30,16 +30,16 @@ public class Main {
         Switcher, COMETRADE, DifferentialProtection, Protection1X, Protection3X, Hand
     }
 
-//    public static void printProperReport (Scenarios scenario) {
-//        switch (scenario) {
-//            case DifferentialProtection -> new reportForDifProtection;
-//            case Switcher -> reportForSwitcher();
-//            case COMETRADE -> reportForCOMETRADE();
-//            case Protection1X -> reportForProtection1X();
-//            case Protection3X -> reportForProtection3X();
-//            case Hand -> reportForHand();
-//        }
-//    }
+    public static void printProperReport (Scenarios scenario) {
+        switch (scenario) {
+            case DifferentialProtection -> new reportForDifProtection;
+            case Switcher -> reportForSwitcher();
+            case COMETRADE -> reportForCOMETRADE();
+            case Protection1X -> reportForProtection1X();
+            case Protection3X -> reportForProtection3X();
+            case Hand -> reportForHand();
+        }
+    }
     public static void main(String[] args) throws DocumentException, IOException {
 
         ReportGenerator.generateReport();

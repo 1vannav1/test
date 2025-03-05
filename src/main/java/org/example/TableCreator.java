@@ -78,7 +78,7 @@ public class TableCreator {
         phrase.add(subscriptText);
         PdfPCell cell = new PdfPCell(phrase);
 
-        cell.setMinimumHeight(35);
+        cell.setMinimumHeight(25);
         cell.setHorizontalAlignment(Element.ALIGN_CENTER);
         cell.setVerticalAlignment(Element.ALIGN_CENTER);
 
@@ -115,7 +115,9 @@ public class TableCreator {
         PdfPCell mergedCell = createCell(content, interLinear);
         mergedCell.setColspan(endColumn - startColumn + 1);
         // Добавляем объединенную ячейку в таблицу
+        mergedCell.setVerticalAlignment(Element.ALIGN_MIDDLE);
         table.getRow(row).getCells()[startColumn] = mergedCell;
+
     }
 
     //метод для объединения двух ячеек в одном столбце
@@ -131,7 +133,9 @@ public class TableCreator {
         // Создаем новую ячейку с объединением
         PdfPCell mergedCell = createCell(base, interLinear);
         mergedCell.setRowspan(endRow - startRow + 1);
+
         // Добавляем объединенную ячейку в таблицу
+        mergedCell.setVerticalAlignment(Element.ALIGN_MIDDLE);
         table.getRow(startRow).getCells()[column] = mergedCell;
     }
 }
