@@ -9,8 +9,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.aspose.pdf.groupprocessor.internal.PdfDocElementsInBytes.getFont;
-
 public class TableCreator {
     /**
      * Класс для генерации таблиц в Пдф. Класс содержит следующие поля:
@@ -26,31 +24,19 @@ public class TableCreator {
     private int columns;
     private int rows;
     private PdfPTable table1;
-
     int v = 12;
 
-
-
-
-
-
-
-
-    private Settings settings = new Settings(v);
-    private Font tableFont = settings.getFont();
-
-
-
-
-
-
-
+    private Settings settings = new Settings();
+    private Font tableFont;
 
     //конструктор класса
     public TableCreator(int rows, int columns) throws DocumentException, IOException {
-    this.columns = columns;
-    this.rows = rows;
-    table1 = createTable(rows, columns);
+
+        tableFont = settings.getFont(v);
+
+        this.columns = columns;
+        this.rows = rows;
+        table1 = createTable(rows, columns);
     }
 
     public PdfPTable getTable(){
@@ -58,7 +44,7 @@ public class TableCreator {
     }
 
     // Основной метод для создания таблицы
-    private PdfPTable createTable(int rows, int columns) throws DocumentException, IOException {
+    private PdfPTable createTable(int rows, int columns){
         table = new PdfPTable(columns);
         table.setWidthPercentage(100);
         table.setSpacingBefore(10f);
@@ -81,7 +67,7 @@ public class TableCreator {
     }
 
     // Метод для создания ячейки с подстрочными символами
-    private PdfPCell createCell(String base, String interLinear) throws DocumentException, IOException {
+    private PdfPCell createCell(String base, String interLinear){
 
         Chunk baseText = new Chunk(base, tableFont);
         Chunk subscriptText = new Chunk(interLinear, tableFont);

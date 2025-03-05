@@ -11,25 +11,24 @@ public class Settings {
      * Класс настроек для подгрузки шрифтов и возможно других необходимых элементов для генерации отчета.
      */
 
-    int v;
 
-    BaseFont baseFont = BaseFont.createFont("C:\\Users\\ing8\\IdeaProjects\\test\\ofont.ru_Myriad Pro.ttf", BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
-    Font font = new Font(baseFont, v, Font.NORMAL);
+    private BaseFont baseFont = BaseFont.createFont("C:\\Users\\ing8\\IdeaProjects\\test\\ofont.ru_Myriad Pro.ttf", BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
+    private Font font;
 
     // Конструктор
-    public Settings(int v) throws DocumentException, IOException {
-        this.v = v;
+    public Settings() throws DocumentException, IOException {
+
     }
 
     // Геттер для получения значения font
-    public Font getFont() {
+    public Font getFont(int v) {
+        setFont(v);
         return font;
     }
 
     // Сеттер для установки значения font
     public void setFont(int v) {
-
-        this.v = v;
+         font = new Font(baseFont, v, Font.NORMAL);
     }
 
 }

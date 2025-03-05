@@ -14,15 +14,30 @@ public class ReportGenerator {
     /** Класс по созданию ПДФ отчета. В данном классе лежат основные методы для генерации элементов
      * пдф файла. В дальнейшем этот объект будет использоваться для создания отчета целиком.
      */
+
     //нужное для методов работы
     static String fileName = "fileName.pdf";
-    static String[] data = new String[]{"data[0]","data[1]", "data[2]", "data[3]", "data[4]"};
+    static String[] data = new String[]{"ИМЯ РЕЖИМА","01.01.2025", "12.00.00", "data[3]", "data[4]"};
     static int rows = 3;
     static int columns = 6;
+
+    static Font textFont;
+    static Settings settings;
+
+    static {
+        try {
+            settings = new Settings();
+        } catch (DocumentException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
 
     // похуй
     static Document document = new Document();
+
 
     // Центральный метод, который собирает элементы для отчета в пдф
     public static void generateReport() throws DocumentException, IOException {
@@ -58,15 +73,24 @@ public class ReportGenerator {
     }
 
     //Метод для генерации заголовка в начале отчета.
-    private static Paragraph getHeader(String[] data){
+    private static Paragraph getHeader(String[] data) throws DocumentException, IOException {
+        //настройки шрифта заголовка
+        int v = 18;
+        textFont = settings.getFont(v);
 
-        Paragraph paragraph = new Paragraph(data[0] + data[1]);
+        Paragraph paragraph = new Paragraph("ПРОТОКОЛ «" + data[0] + "»", textFont);
+        paragraph.setAlignment(Element.ALIGN_CENTER);
         return paragraph;
     }
 
     //Метод для генерации заголовка в начале отчета.
     private static Paragraph getScenarioInfo(String[] data){
-        return new Paragraph(data[2] + data[3]);
+        //настройки шрифта времени и даты
+        int v = 14;
+        textFont = settings.getFont(v);
+
+        Paragraph paragraph = new Paragraph("Дата: " + data[1] + "  Время: " + data[2], textFont);
+        return paragraph;
     }
 
     //Метод для создания таблицы
@@ -75,14 +99,12 @@ public class ReportGenerator {
         PdfPTable table = infoTable.getTable();
 
         infoTable.mergeCellsInOneRow(0, 4, 5, "объединил ячейки в строке(04-05)", "0");
-
         //объединяем необходимые нам ячейки в строке.
         infoTable.mergeCellsInOneColumn(0, 1, 2, "объединил ячейки в столбце(10-20)", "0");
-
         // Заполняем ячейки данными
         //первая строчка
-        infoTable.setCellContent(0, 0, data[0], "0");
-        infoTable.setCellContent(0, 1, data[0], "1");
+        infoTable.setCellContent(0, 0, data[3], "0");
+        infoTable.setCellContent(0, 1, data[3], "1");
         infoTable.setCellContent(0, 2, "0", "2");
         infoTable.setCellContent(0, 3, "0", "3");
         //вторая строчка
