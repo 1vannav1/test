@@ -7,27 +7,19 @@ import com.lowagie.text.pdf.PdfWriter;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class ReportGenerator {
     /** Класс по созданию ПДФ отчета. В данном классе лежат основные методы для генерации элементов
      * пдф файла. В дальнейшем этот объект будет использоваться для создания отчета целиком.
      */
-
     //нужное для методов работы
     static int rows = 7;
     static int columns = 6;
 
-    static String[] fileName = new String[]{"fileName.pdf"};
-    static String[] element0 = new String[]{"Название режима"};
-    static String[] element1 = new String[]{"01.01.2025", "12.00.00", "Т-16-У3", "Иванов Иван Иванович", "D-0/y-1", "ABG"};
-    static String[] element2 = new String[]{"101", "10", "102", "130", "103", "250", "51", "20", "52", "160", "53", "280","да", "нет"};
-    static String[] element3 = new String[]{"Аварий нет"};
-
-    static String[][] bufferData = new String[][]{}; //{fileName, element0, element1, element2, element3};
-
+    //переменные для шрифтов и настроек
     static Font textFont;
     static Settings settings;
-
     static {
         try {
             settings = new Settings();
@@ -39,10 +31,7 @@ public class ReportGenerator {
     static Document document = new Document();
 
     // Центральный метод, который собирает элементы для отчета в пдф
-    public static void generateReport(String[][] abdfba) throws DocumentException, IOException {
-
-        bufferData = abdfba;
-
+    public static void generateReport(String[][] bufferData) throws DocumentException, IOException {
         Element[] reportElements = new Element[5];  //создание массива элементов для генератора пдф
 
         reportElements[0] = getHeader(bufferData);
@@ -106,7 +95,7 @@ public class ReportGenerator {
 
     //Метод для создания таблицы
     private static PdfPTable getScenarioTable(String[][] bufferData, int rows, int columns) throws DocumentException, IOException {
-
+        // Создаем таблицу
         TableCreator infoTable = new TableCreator(rows, columns);
         PdfPTable table = infoTable.getTable();
                                //Заполняем ячейки данными
@@ -119,45 +108,45 @@ public class ReportGenerator {
         //вторая строчка
         infoTable.setCellContent(1, 0, "I", "A1");
         infoTable.setCellContent(1, 1, bufferData[3][0], "");
-        infoTable.setCellContent(1, 2, "\u03C6", "A1");
+        infoTable.setCellContent(1, 2, "φ", "A1");
         infoTable.setCellContent(1, 3, bufferData[3][1], "");
         //третья строчка
         infoTable.setCellContent(2, 0, "I", "B1");
         infoTable.setCellContent(2, 1, bufferData[3][2], "");
-        infoTable.setCellContent(2, 2, "\u03C6", "B1");
+        infoTable.setCellContent(2, 2, "φ", "B1");
         infoTable.setCellContent(2, 3, bufferData[3][3], "");
         infoTable.mergeCellsInOneColumn(4, 1,3,"1","");
         infoTable.mergeCellsInOneColumn(5, 1,3,"1","");
         //четвертая строчка
         infoTable.setCellContent(3, 0, "I", "c1");
         infoTable.setCellContent(3, 1, bufferData[3][4], "");
-        infoTable.setCellContent(3, 2, "\u03C6", "С1");
+        infoTable.setCellContent(3, 2, "φ", "С1");
         infoTable.setCellContent(3, 3, bufferData[3][5], "");
         //пятая строчка
         infoTable.setCellContent(4, 0, "I", "A2");
         infoTable.setCellContent(4, 1, bufferData[3][6], "");
-        infoTable.setCellContent(4, 2, "\u03C6", "A2");
+        infoTable.setCellContent(4, 2, "φ", "A2");
         infoTable.setCellContent(4, 3, bufferData[3][7], "");
         //шестая строчка
         infoTable.setCellContent(5, 0, "I", "B2");
         infoTable.setCellContent(5, 1, bufferData[3][8], "");
-        infoTable.setCellContent(5, 2, "\u03C6", "B2");
+        infoTable.setCellContent(5, 2, "φ", "B2");
         infoTable.setCellContent(5, 3, bufferData[3][9], "");
-        infoTable.mergeCellsInOneColumn(4, 4,6,bufferData[3][12],"");
-        infoTable.mergeCellsInOneColumn(5, 4,6,bufferData[3][13],"");
+        infoTable.mergeCellsInOneColumn(4, 4,6, bufferData[3][12],"");
+        infoTable.mergeCellsInOneColumn(5, 4,6, bufferData[3][13],"");
         //седьмая строчка
         infoTable.setCellContent(6, 0, "I", "С2");
         infoTable.setCellContent(6, 1, bufferData[3][10], "");
-        infoTable.setCellContent(6, 2, "\u03C6", "С2");
+        infoTable.setCellContent(6, 2, "φ", "С2");
         infoTable.setCellContent(6, 3, bufferData[3][11], "");
 
         return table;
     }
     //Метод для вывода ошибки
     private static Paragraph getErrors(String[][] bufferData){
+        // Настройка шрифта
         int v = 14;
         textFont = settings.getFont(v);
-
         return new Paragraph("Аварийные сообщения: " + bufferData[4][0], textFont);
     }
 
