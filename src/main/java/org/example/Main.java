@@ -25,45 +25,44 @@ public class Main {
      * Классы для генерации элементов пдф отчета: TableCreator,
      * Класс для генерации отчетов ПДФ.
      */
-
+    //енам сценариев
     enum Scenarios {
-        Switcher, COMETRADE, DifferentialProtection, Protection1X, Protection3X, Hand
+        Switcher,
+        DifferentialProtection
     }
 
-    public static void printProperReport (Scenarios scenario) {
-        switch (scenario) {
-            case DifferentialProtection -> new reportForDifProtection;
-            case Switcher -> reportForSwitcher();
-            case COMETRADE -> reportForCOMETRADE();
-            case Protection1X -> reportForProtection1X();
-            case Protection3X -> reportForProtection3X();
-            case Hand -> reportForHand();
-        }
-    }
     public static void main(String[] args) throws DocumentException, IOException {
 
-        ReportGenerator.generateReport();
+        Scenarios scenario = Scenarios.DifferentialProtection;
 
+        String[] element0 = new String[]{"SwitcherData.pdf"};
+        String[] element1 = new String[]{"Название режима"};
+        String[] element2 = new String[]{"01.01.2025", "12.00.00", "Т-16-У3", "Иванов Иван Иванович", "D-0/y-1", "ABG"};
+        String[] element3 = new String[]{"101", "10", "102", "130", "103", "250", "51", "20", "52", "160", "53", "280","да", "нет"};
+        String[] element4 = new String[]{"Аварий нет"};
+
+        String[][] SwitcherData = new String[][]{element0, element1, element2, element3, element4};
+
+
+        String[] element01 = new String[]{"DifferentialProtection.pdf"};
+        String[] element11 = new String[]{"ДИФФЕРЕНЦИАЛЬНАЯ ЗАЩИТА"};
+        String[] element21 = new String[]{"01.01.2025", "12.00.00", "Т-16-У3", "Иванов Иван Иванович", "D-0/y-1", "ABG"};
+        String[] element31 = new String[]{"101", "10", "102", "130", "103", "250", "51", "20", "52", "160", "53", "280","да", "нет"};
+        String[] element41 = new String[]{"Аварий нет"};
+
+        String[][] DifferentialProtectionData = new String[][]{element01, element11, element21, element31, element41};
+
+        switch (scenario) {
+            case Switcher:
+                ReportGenerator.generateReport(SwitcherData);
+                break;
+            case DifferentialProtection:
+                ReportGenerator.generateReport(DifferentialProtectionData);
+                break;
+            default:
+                System.out.println("Введен неправильный сценарий");
+
+        }
     }
 }
-
-//задача на завтра. Сделать отчет нормально для ДЗ.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
