@@ -3,64 +3,48 @@ package org.example;
 //import com.aspose.pdf.Document;
 
 import com.lowagie.text.*;
-import com.lowagie.text.Font;
-import com.lowagie.text.List;
-import com.lowagie.text.pdf.*;
-import com.lowagie.text.pdf.TextField;
 
-import java.awt.*;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-
-import static org.example.reportForDifProtection.createReportForDifProtection;
 
 
 public class Main {
-    //    enum Scenarios {
-    //        Switcher, COMETRADE, DifferentialProtection, Protection1X, Protection3X, Hand
-    //    }
-    public static void main(String[] args) {
+    /** Это проект по генерации пдф отчетов основного проекта. В нем содержится следующая иерархия работы файлов:
+     * Внутренние настройки
+     * Классы для генерации элементов пдф отчета: TableCreator,
+     * Класс для генерации отчетов ПДФ.
+     *.
+     * Сейчас генерируется только один отчет - диф/защита. Это связано с тем, что неизвестен конструктор других отчетов
+     * Для того, чтобы добавить другие отчеты, необходимо добавить их в енам. Также стоит перестроить конструктор таблиц,
+     * чтобы размер и данные генерировались в зависимости от Scenarios scenario
+     */
+    //енам сценариев
+    enum Scenarios {
+        Switcher,
+        DifferentialProtection
+    }
 
-        //данные для отчета подгружаемые из буфера
-        //1.Bufer.getScenarioData()
-        int rows = 3;
-        int columns = 6;
-        //2.getProperName
-        String properName = "testTable.pdf";
-        //3.Отправка массива данных от сценария из буфера для создания 5 элементов:
+    public static void main(String[] args) throws DocumentException, IOException {
 
+        // Данные который должны получаться от буфера.
+        Scenarios scenario = Scenarios.DifferentialProtection;
+        String[] fileName = new String[]{"DifferentialProtection.pdf"};
+        String[] headerElement = new String[]{"ДИФФЕРЕНЦИАЛЬНАЯ ЗАЩИТА"};
+        String[] scenarioInfoElement = new String[]{"01.01.2025", "12.00.00", "Т-16-У3", "Иванов Иван Иванович", "D-0/y-1", "ABG"};
+        String[] scenarioTableElement = new String[]{"101", "10", "102", "130", "103", "250", "51", "20", "52", "160", "53", "280","да", "нет"};
+        String[] errorsElement = new String[]{"Аварий нет"};
 
+        String[][] dataForCreatePDF = new String[][]{fileName, headerElement, scenarioInfoElement, scenarioTableElement, errorsElement};
 
-        //создаем отчет
-        createReportForDifProtection(rows, columns, properName);
+        // Оператор для генерации отчета.
+        switch (scenario) {
+            case Switcher, DifferentialProtection:
+                ReportGenerator.generateReport(dataForCreatePDF);
+                break;
+            default:
+                System.out.println("Введен неправильный сценарий");
+
+        }
     }
 }
-//    public static void printProperReport (Scenarios scenario){
-//        switch (scenario) {
-//            case DifferentialProtection -> new reportForDifProtection.;
-//            case Switcher -> reportForSwitcher();
-//            case COMETRADE -> reportForCOMETRADE();
-//            case Protection1X -> reportForProtection1X();
-//            case Protection3X -> reportForProtection3X();
-//            case Hand -> reportForHand();
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 

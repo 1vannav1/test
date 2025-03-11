@@ -9,9 +9,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-
 public class TableCreator {
-
     /**
      * Класс для генерации таблиц в Пдф. Класс содержит следующие поля:
      * private PdfPTable table;
@@ -26,15 +24,19 @@ public class TableCreator {
     private int columns;
     private int rows;
     private PdfPTable table1;
+    int v = 12;
 
-    private BaseFont baseFont = BaseFont.createFont("C:\\Users\\ing8\\IdeaProjects\\test\\ofont.ru_Myriad Pro.ttf", BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
-    private Font font = new Font(baseFont, 12, Font.NORMAL);
+    private Settings settings = new Settings();
+    private Font tableFont;
 
     //конструктор класса
     public TableCreator(int rows, int columns) throws DocumentException, IOException {
-    this.columns = columns;
-    this.rows = rows;
-    table1 = createTable(rows, columns);
+
+        tableFont = settings.getFont(v);
+
+        this.columns = columns;
+        this.rows = rows;
+        table1 = createTable(rows, columns);
     }
 
     public PdfPTable getTable(){
@@ -65,10 +67,10 @@ public class TableCreator {
     }
 
     // Метод для создания ячейки с подстрочными символами
-    private PdfPCell createCell(String base, String interLinear) {
+    private PdfPCell createCell(String base, String interLinear){
 
-        Chunk baseText = new Chunk(base, font);
-        Chunk subscriptText = new Chunk(interLinear, font);
+        Chunk baseText = new Chunk(base, tableFont);
+        Chunk subscriptText = new Chunk(interLinear, tableFont);
 
         subscriptText.setTextRise(-3); // Смещение вниз для нижнего индекса
         Phrase phrase = new Phrase();
@@ -84,10 +86,8 @@ public class TableCreator {
     }
 
     // Метод для установки текста в ячейку
-    public void setCellContent(int row, int column, String base, String interLinear) {
+    public void setCellContent(int row, int column, String base, String interLinear) throws DocumentException, IOException {
         if (row >= 0 && row < cellGrid.size() && column >= 0 && column < cellGrid.get(row).size()) {
-            // Получаем ячейку из сетки
-            PdfPCell cell = cellGrid.get(row).get(column);
             // Удаляем старую ячейку из таблицы
             table.getRow(row).getCells()[column] = null;
             // Создаем новую ячейку с обновленным содержимым
@@ -102,7 +102,7 @@ public class TableCreator {
     }
 
     //метод для объединения двух ячеек в одной строке
-    public void mergeCellsInOneRow(int row, int startColumn, int endColumn, String content, String interLinear) {
+    public void mergeCellsInOneRow(int row, int startColumn, int endColumn, String content, String interLinear) throws DocumentException, IOException {
         // Проверяем, что startColumn и endColumn находятся в пределах таблицы
         if (startColumn >= endColumn || endColumn >= table.getNumberOfColumns()) {
             throw new IllegalArgumentException("Недопустимые индексы столбцов");
@@ -115,11 +115,13 @@ public class TableCreator {
         PdfPCell mergedCell = createCell(content, interLinear);
         mergedCell.setColspan(endColumn - startColumn + 1);
         // Добавляем объединенную ячейку в таблицу
+        mergedCell.setVerticalAlignment(Element.ALIGN_MIDDLE);
         table.getRow(row).getCells()[startColumn] = mergedCell;
+
     }
 
     //метод для объединения двух ячеек в одном столбце
-    public void mergeCellsInOneColumn(int column, int startRow, int endRow, String base, String interLinear) {
+    public void mergeCellsInOneColumn(int column, int startRow, int endRow, String base, String interLinear) throws DocumentException, IOException {
         // Проверяем, что startRow и endRow находятся в пределах таблицы
         if (startRow >= endRow || endRow >= table.getRows().size()) {
             throw new IllegalArgumentException("Недопустимые индексы строк");
@@ -131,7 +133,9 @@ public class TableCreator {
         // Создаем новую ячейку с объединением
         PdfPCell mergedCell = createCell(base, interLinear);
         mergedCell.setRowspan(endRow - startRow + 1);
+
         // Добавляем объединенную ячейку в таблицу
+        mergedCell.setVerticalAlignment(Element.ALIGN_MIDDLE);
         table.getRow(startRow).getCells()[column] = mergedCell;
     }
 }
